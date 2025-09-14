@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+  <title>Și ce mai zici?</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #FFFF99, #ffe6e6);
+      font-family: Arial, sans-serif;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .box-container {
+      position: relative;
+      width: 440px;
+      height: 440px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .box-container::before {
+      content: "";
+      width: 440px;
+      height: 440px;
+      background-color: #89cff0;
+      position: absolute;
+      z-index: -1;
+      border-radius: 50%;
+    }
+
+    .box-body {
+      position: relative;
+      height: 200px;
+      width: 200px;
+      background: linear-gradient(#762c2c, #ff0303);
+      border-bottom-left-radius: 5%;
+      border-bottom-right-radius: 5%;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+      overflow: visible;
+      cursor: pointer;
+    }
+
+    .box-lid {
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 90%;
+      height: 40px;
+      width: 220px;
+      background-color: #cc231e;
+      border-radius: 5%;
+      box-shadow: 0 8px 4px -4px rgba(0, 0, 0, 0.3);
+    }
+
+    .box-lid::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      background: linear-gradient(#ffefa0, #fff);
+    }
+
+    .box-bowtie {
+      z-index: 1;
+      height: 100%;
+    }
+
+    .box-bowtie::before,
+    .box-bowtie::after {
+      content: "";
+      width: 83px;
+      height: 83px;
+      border: 17px solid white;
+      border-radius: 50% 50% 0 50%;
+      position: absolute;
+      bottom: 99%;
+      z-index: -1;
+    }
+
+    .box-bowtie::before {
+      left: 50%;
+      transform: translateX(-100%) skew(10deg, 10deg);
+    }
+
+    .box-bowtie::after {
+      left: 50%;
+      transform: translateX(0%) rotate(90deg) skew(10deg, 10deg);
+    }
+
+    #birthday-text {
+      font-size: 40px;
+      font-weight: bold;
+      color: #d63384;
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-40%);
+      opacity: 0;
+      transition: all 0.5s ease;
+      white-space: nowrap;
+      z-index: 10;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 50px;
+      height: 65px;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation-name: rise;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      top: 65px;
+      left: 50%;
+      width: 2px;
+      height: 40px;
+      background: #555;
+      transform: translateX(-50%);
+    }
+
+    @keyframes rise {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-110vh); }
+    }
+
+    .love-box {
+      margin-top: 20px;
+      text-align: center;
+      color: #333;
+      z-index: 2;
+    }
+
+    .love-box h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: dodgerblue;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    /* Animații cutie */
+    @keyframes box-lid {
+      0%, 42% { transform: translate3d(-50%, 0%, 0) rotate(0deg); }
+      60% { transform: translate3d(-85%, -230%, 0) rotate(-25deg); }
+      90%, 100% { transform: translate3d(-119%, 225%, 0) rotate(-70deg); }
+    }
+
+    @keyframes box-body {
+      0% { transform: translate3d(0, 0, 0) rotate(0); }
+      25% { transform: translate3d(0, 25%, 0) rotate(20deg); }
+      50% { transform: translate3d(0, -15%, 0) rotate(0); }
+      70% { transform: translate3d(0, 0, 0) rotate(0); }
+    }
+
+    @keyframes box-bowtie-right {
+      0%, 50%, 75% { transform: translateX(0%) rotate(90deg) skew(10deg,10deg); }
+      90%, 100% { transform: translate(-50%, -15%) rotate(45deg) skew(10deg,10deg); }
+    }
+
+    @keyframes box-bowtie-left {
+      0% { transform: translateX(-100%) rotate(0deg) skew(10deg,10deg); }
+      50%, 75% { transform: translate(-50%, -15%) rotate(45deg) skew(10deg,10deg); }
+      90%, 100% { transform: translateX(-100%) rotate(0deg) skew(10deg,10deg); }
+    }
+
+    /* Clase pentru declanșarea animațiilor prin JS */
+    .animate-body {
+      animation: box-body 1s forwards ease-in-out;
+    }
+
+    .animate-lid {
+      animation: box-lid 1s forwards ease-in-out;
+    }
+
+    .animate-bowtie::before {
+      animation: box-bowtie-left 1.1s forwards ease-in-out;
+    }
+
+    .animate-bowtie::after {
+      animation: box-bowtie-right 1.1s forwards ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="box-container">
+    <div class="box-body" onclick="triggerSurprise()">
+      <div class="box-lid">
+        <div class="box-bowtie"></div>
+      </div>
+      <div id="birthday-text">🎉 La mulți ani, dragule! 🎉</div>
+    </div>
+  </div>
+
+  <div class="love-box">
+    <h2>Te iubesc de <span id="count">0</span> ori ❤️</h2>
+    <button onclick="increaseLove()">Apasă-mă!</button>
+  </div>
+
+  <script>
+    let count = 0;
+    let balloonsStarted = false;
+    let isOpened = false;
+
+    function increaseLove() {
+      count++;
+      document.getElementById("count").textContent = count;
+    }
+
+    function triggerSurprise() {
+      if (isOpened) return; // prevenim declanșarea de mai multe ori
+      isOpened = true;
+
+      const text = document.getElementById("birthday-text");
+      text.style.opacity = 1;
+      text.style.transform = "translate(-50%, -250px)";
+
+      const boxBody = document.querySelector(".box-body");
+      const boxLid = document.querySelector(".box-lid");
+      const bowtie = document.querySelector(".box-bowtie");
+
+      boxBody.classList.add("animate-body");
+      boxLid.classList.add("animate-lid");
+      bowtie.classList.add("animate-bowtie");
+
+      if (!balloonsStarted) {
+        balloonsStarted = true;
+        setInterval(createBalloon, 500);
+      }
+    }
+
+    function createBalloon() {
+      const balloon = document.createElement("div");
+      balloon.classList.add("balloon");
+      document.body.appendChild(balloon);
+
+      const colors = ["#ff4d6d", "#ffb347", "#89cff0", "#77dd77", "#c084fc"];
+      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+      balloon.style.left = Math.random() * window.innerWidth + "px";
+      balloon.style.animationDuration = (6 + Math.random() * 4) + "s";
+
+      setTimeout(() => balloon.remove(), 20000);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>
